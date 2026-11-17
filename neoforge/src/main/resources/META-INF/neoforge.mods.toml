@@ -1,0 +1,28 @@
+modLoader="javafml"
+loaderVersion="[1,)"
+license="MIT"
+
+[[mods]]
+modId="lm_wireless_redstone"
+version="${version}"
+displayName="LM Wireless Redstone"
+authors="LIAM"
+iconFile="assets/lm_wireless_redstone/icon.png"
+description="Беспроводной редстоун для Minecraft без ограничения дальности сигнала."
+
+[[mixins]]
+config="lm_wireless_redstone.mixins.json"
+
+[[dependencies.lm_wireless_redstone]]
+modId="neoforge"
+type="required"
+versionRange="[${neo_version},)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.lm_wireless_redstone]]
+modId="minecraft"
+type="required"
+versionRange="[${minecraft_version}]"
+ordering="NONE"
+side="BOTH"

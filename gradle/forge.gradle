@@ -1,0 +1,59 @@
+apply from: rootProject.file('gradle/platform.gradle')
+apply plugin: 'net.minecraftforge.gradle'
+
+minecraft {
+    if (!modernMinecraft) {
+        mappings channel: 'official', version: minecraftVersion
+    }
+    runs {
+        configureEach {
+            workingDir = layout.projectDirectory.dir('run')
+            args '--mixin.config=lm_wireless_redstone.mixins.json'
+            systemProperty 'eventbus.api.strictRuntimeChecks', 'true'
+        }
+        register('client')
+        register('server') {
+            args '--nogui'
+        }
+    }
+}
+
+repositories {
+    minecraft.mavenizer(it)
+    maven fg.forgeMaven
+    maven fg.minecraftLibsMaven
+    mavenCentral()
+}
+
+def eventBusVersion = minecraftVersion in ['26.1', '26.1.1'] ? '7.0.1' :
+        minecraftVersion == '26.3' ? '7.0.6' : '7.0.5'
+dependencies {
+    implementation minecraft.dependency("forge-${minecraftVersion}", "net.minecraftforge:forge:${loaderDependency}")
+    annotationProcessor "net.minecraftforge:eventbus-validator:${eventBusVersion}"
+}
+
+def forgeVersion = loaderDependency.split('-', 2)[1]
+def packFormats = [
+        '1.21.11': ['75, 0', '94, 1'],
+        '26.1'   : ['84, 0', '101, 1'],
+        '26.1.1' : ['84, 0', '101, 1'],
+        '26.1.2' : ['84, 0', '101, 1'],
+        '26.2'   : ['88, 0', '107, 1'],
+        '26.3'   : ['97, 1', '121, 0']
+][minecraftVersion]
+def metadata = [version: version, minecraft_version: minecraftVersion, forge_version: forgeVersion,
+                forge_major: forgeVersion.tokenize('.')[0], min_pack_format: packFormats[0], max_pack_format: packFormats[1]]
+processResources {
+    inputs.properties metadata
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+        expand metadata
+    }
+}
+
+tasks.named('jar', Jar) {
+    manifest.attributes('MixinConfigs': 'lm_wireless_redstone.mixins.json')
+}
+
+tasks.withType(JavaExec).configureEach {
+    javaLauncher = javaToolchains.launcherFor(java.toolchain)
+}

@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "lm_wireless_redstone:block/transmitter"
+  }
+}

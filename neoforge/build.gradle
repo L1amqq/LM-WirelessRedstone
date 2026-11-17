@@ -1,0 +1,10 @@
+buildscript {
+    repositories {
+        maven { url = 'https://maven.neoforged.net/releases/' }
+        gradlePluginPortal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "net.neoforged:moddev-gradle:${moddev_version}"
+    }
+}

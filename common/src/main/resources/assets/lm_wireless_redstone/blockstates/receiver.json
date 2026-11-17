@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "lm_wireless_redstone:block/receiver"
+    }
+  }
+}

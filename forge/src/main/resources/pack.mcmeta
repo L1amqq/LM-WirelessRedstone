@@ -1,0 +1,7 @@
+{
+  "pack": {
+    "description": "LM Wireless Redstone",
+    "min_format": [${min_pack_format}],
+    "max_format": [${max_pack_format}]
+  }
+}

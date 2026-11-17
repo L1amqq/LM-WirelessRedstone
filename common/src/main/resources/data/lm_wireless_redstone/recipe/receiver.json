@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "pattern": [
+    "ABA",
+    "ACA",
+    "ADA"
+  ],
+  "key": {
+    "A": "minecraft:oxidized_copper",
+    "B": "minecraft:amethyst_shard",
+    "C": "minecraft:ender_eye",
+    "D": "minecraft:comparator"
+  },
+  "result": {
+    "id": "lm_wireless_redstone:receiver",
+    "count": 1
+  }
+}

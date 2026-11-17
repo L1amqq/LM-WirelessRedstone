@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8.7",
+  "package": "com.liam.wirelessredstone.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "BlockStateBaseMixin",
+    "PistonBaseBlockMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

@@ -1,0 +1,42 @@
+apply plugin: 'java-library'
+
+def loader = parent.name
+def mc = project.name
+def modern = mc.startsWith('26.')
+def guiVersion = mc in ['26.2', '26.3'] ? '26.2' : 'before-26.2'
+def apiVersion = modern ? '26.1' : '1.21.11'
+
+ext.minecraftVersion = mc
+ext.modernMinecraft = modern
+ext.loaderDependency = gradle.ext.targetDependencies.getProperty("${loader}.${mc}")
+version = rootProject.mod_version
+group = rootProject.maven_group
+
+base {
+    archivesName = "${rootProject.archives_base_name}-${loader}-${mc}"
+}
+
+sourceSets.main {
+    java.srcDirs(
+            rootProject.file('common/src/main/java'),
+            rootProject.file("versions/${apiVersion}/src/main/java"),
+            rootProject.file("versions/${guiVersion}/src/main/java"),
+            rootProject.file("${loader}/src/main/java"),
+            rootProject.file("${loader}/compat/${apiVersion}/src/main/java")
+    )
+    resources.srcDirs(rootProject.file('common/src/main/resources'), rootProject.file("${loader}/src/main/resources"))
+}
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(modern ? 25 : 21)
+    withSourcesJar()
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release = modern ? 25 : 21
+}
+
+tasks.named('jar', Jar) {
+    from(rootProject.file('LICENSE'))
+}

@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "lm_wireless_redstone:receiver",
+    "lm_wireless_redstone:transmitter"
+  ]
+}

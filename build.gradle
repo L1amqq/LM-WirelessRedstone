@@ -1,0 +1,35 @@
+plugins {
+    id 'base'
+}
+
+version = project.mod_version
+group = project.maven_group
+
+def releaseTargets = gradle.ext.minecraftTargets
+def releaseLoaders = gradle.ext.releaseLoaders
+
+tasks.named('build') {
+    dependsOn releaseLoaders.collectMany { loader ->
+        releaseTargets.collect { mc -> ":${loader}:${mc}:build" }
+    }
+}
+
+tasks.register('release', Sync) {
+    group = 'build'
+    description = 'Builds release jars for all supported loaders and Minecraft versions.'
+    dependsOn tasks.named('build')
+    into layout.buildDirectory.dir("release/${version}")
+    releaseLoaders.each { loader ->
+        releaseTargets.each { mc ->
+            from(layout.projectDirectory.dir("${loader}/${mc}/build/libs")) {
+                include "${archives_base_name}-${loader}-${mc}-${version}.jar"
+                into "${loader}/${mc}"
+            }
+        }
+    }
+}
+
+tasks.register('buildAllMinecraftVersions') {
+    group = 'build'
+    dependsOn tasks.named('release')
+}

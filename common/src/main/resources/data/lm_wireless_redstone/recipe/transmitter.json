@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "pattern": [
+    "ABA",
+    "ACA",
+    "ADA"
+  ],
+  "key": {
+    "A": "minecraft:copper_block",
+    "B": "minecraft:amethyst_shard",
+    "C": "minecraft:redstone_block",
+    "D": "minecraft:comparator"
+  },
+  "result": {
+    "id": "lm_wireless_redstone:transmitter",
+    "count": 1
+  }
+}

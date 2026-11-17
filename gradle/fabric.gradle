@@ -1,0 +1,33 @@
+apply from: rootProject.file('gradle/platform.gradle')
+apply plugin: modernMinecraft ? 'net.fabricmc.fabric-loom' : 'net.fabricmc.fabric-loom-remap'
+
+repositories {
+    maven { url = 'https://maven.fabricmc.net/' }
+    mavenCentral()
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${minecraftVersion}"
+    if (modernMinecraft) {
+        implementation "net.fabricmc:fabric-loader:${rootProject.loader_version}"
+        implementation "net.fabricmc.fabric-api:fabric-api:${loaderDependency}"
+    } else {
+        mappings loom.officialMojangMappings()
+        modImplementation "net.fabricmc:fabric-loader:${rootProject.loader_version}"
+        modImplementation "net.fabricmc.fabric-api:fabric-api:${loaderDependency}"
+    }
+}
+
+def metadata = [
+    version              : version,
+    minecraft_dependency : minecraftVersion,
+    loader_dependency    : ">=${rootProject.loader_version}",
+    java_dependency      : modernMinecraft ? '>=25' : '>=21',
+    fabric_api_dependency: ">=${loaderDependency}"
+]
+processResources {
+    inputs.properties metadata
+    filesMatching('fabric.mod.json') {
+        expand metadata
+    }
+}

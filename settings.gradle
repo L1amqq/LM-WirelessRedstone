@@ -1,0 +1,29 @@
+pluginManagement {
+    repositories {
+        maven { url = 'https://maven.fabricmc.net/' }
+        maven { url = 'https://maven.neoforged.net/releases/' }
+        gradlePluginPortal()
+        mavenCentral()
+    }
+}
+
+plugins {
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '1.0.0'
+}
+
+rootProject.name = 'LM-WirelessRedstone'
+
+def dependencies = new Properties()
+file('gradle/targets.properties').withInputStream { dependencies.load(it) }
+def minecraftTargets = dependencies.stringPropertyNames()
+        .findAll { it.startsWith('fabric.') }
+        .collect { it.substring('fabric.'.length()) }
+        .sort()
+
+gradle.ext.targetDependencies = dependencies
+gradle.ext.minecraftTargets = minecraftTargets
+
+gradle.ext.releaseLoaders = ['fabric', 'neoforge', 'forge']
+gradle.ext.releaseLoaders.each { loader ->
+    minecraftTargets.each { mc -> include "${loader}:${mc}" }
+}

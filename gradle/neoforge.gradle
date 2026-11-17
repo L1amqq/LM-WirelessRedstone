@@ -1,0 +1,27 @@
+apply from: rootProject.file('gradle/platform.gradle')
+apply plugin: 'net.neoforged.moddev'
+
+def blockBreakApi = minecraftVersion in ['1.21.11', '26.1', '26.1.1'] ? 'before-26.1.2' : '26.1.2'
+sourceSets.main.java.srcDir(rootProject.file("neoforge/compat/${blockBreakApi}/src/main/java"))
+
+neoForge {
+    version = loaderDependency
+    runs {
+        client { client() }
+        server {
+            server()
+            programArgument '--nogui'
+        }
+    }
+    mods {
+        lm_wireless_redstone { sourceSet(sourceSets.main) }
+    }
+}
+
+def metadata = [version: version, minecraft_version: minecraftVersion, neo_version: loaderDependency]
+processResources {
+    inputs.properties metadata
+    filesMatching('META-INF/neoforge.mods.toml') {
+        expand metadata
+    }
+}

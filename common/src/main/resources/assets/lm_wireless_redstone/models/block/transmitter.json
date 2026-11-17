@@ -1,0 +1,7 @@
+{
+  "parent": "lm_wireless_redstone:block/emissive_cube",
+  "textures": {
+    "all": "lm_wireless_redstone:block/lm_transmitter",
+    "glow": "lm_wireless_redstone:block/lm_transmitter_glow"
+  }
+}
